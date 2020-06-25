@@ -479,8 +479,8 @@ func prepareCSVs(temptheta []theta, startInd int) {
 			}
 			newfloat := jensenShannon(v.Vector, backend[j].Vector)
 			if newfloat < confvar.DivMax {
-				resultCSV = append(resultCSV, Divergence{SourceID: strconv.Itoa(startInd + startIter), 
-					TargetID: strconv.Itoa(j + 1), 
+				resultCSV = append(resultCSV, Divergence{SourceID: strconv.Itoa(startInd + startIter),
+					TargetID: strconv.Itoa(j + 1),
 					JSDivergence: newfloat})
 				count++
 				if count >= csvlength {
@@ -809,24 +809,27 @@ func JsonResponse(info Info) (PassageJsonResponse, error) {
 	text := ""
 	var ids []string
 	var manhattans []string
+	var txts []string	// json fork
 
 	for i := range thetas {
 		switch {
 		case i == 0:
 			ids = append(ids, thetas[i].ID)
 			manhattans = append(manhattans, "0")
+			txts = append(txts, thetas[i].Text)  // json fork
 			text = thetas[i].Text
 		case i > 0:
-			mannormed := distances[i]
+			mannormed := distances[i] * 100  // json fork (superficial)
 			mandist := strconv.FormatFloat(mannormed, 'f', 2, 64)
 			ids = append(ids, thetas[i].ID)
 			manhattans = append(manhattans, mandist)
+			txts = append(txts, thetas[i].Text)  // json fork
 		}
 	}
 
 	relatedItems := []relatedItem{}
 	for i := range ids {
-		relatedItems = append(relatedItems, relatedItem{Id: ids[i], Distance: manhattans[i]})
+		relatedItems = append(relatedItems, relatedItem{Id: ids[i], Rank: i, Distance: manhattans[i], Text: txts[i]})  // json fork
 	}
 
 	passageObject := PassageJsonResponse{URN: "test", Text: text, Items: relatedItems}
@@ -1119,5 +1122,7 @@ type PassageJsonResponse struct {
 }
 type relatedItem struct {
 	Id       string `json:"id"`
+	Rank		 int	  `json:"rank"`  // json fork
 	Distance string `json:"distance"`
+	Text		 string `json:"text"`  // json fork
 }

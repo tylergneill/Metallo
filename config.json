@@ -1,7 +1,7 @@
 {
 "host": "http://localhost:3737",
 "port": ":3737",
-"csv_source": "theta/thetaExample.csv",
+"csv_source": "theta/theta_pramana_2019_08_01.csv",
 "local": true,
 "db": false,
 "significance": 0.01,
