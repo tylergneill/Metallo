@@ -809,27 +809,27 @@ func JsonResponse(info Info) (PassageJsonResponse, error) {
 	text := ""
 	var ids []string
 	var manhattans []string
-	var txts []string	// json fork
+	var txts []string	// tgn fork
 
 	for i := range thetas {
 		switch {
 		case i == 0:
 			ids = append(ids, thetas[i].ID)
 			manhattans = append(manhattans, "0")
-			txts = append(txts, thetas[i].Text)  // json fork
+			txts = append(txts, thetas[i].Text)  // tgn fork
 			text = thetas[i].Text
 		case i > 0:
-			mannormed := distances[i] * 100  // json fork (superficial)
+			mannormed := distances[i] * 100  // tgn fork (superficial)
 			mandist := strconv.FormatFloat(mannormed, 'f', 2, 64)
 			ids = append(ids, thetas[i].ID)
 			manhattans = append(manhattans, mandist)
-			txts = append(txts, thetas[i].Text)  // json fork
+			txts = append(txts, thetas[i].Text)  // tgn fork
 		}
 	}
 
 	relatedItems := []relatedItem{}
 	for i := range ids {
-		relatedItems = append(relatedItems, relatedItem{Id: ids[i], Rank: i, Distance: manhattans[i], Text: txts[i]})  // json fork
+		relatedItems = append(relatedItems, relatedItem{Id: ids[i], Rank: i, Distance: manhattans[i], Text: txts[i]})  // tgn fork
 	}
 
 	passageObject := PassageJsonResponse{URN: "test", Text: text, Items: relatedItems}
@@ -1122,7 +1122,7 @@ type PassageJsonResponse struct {
 }
 type relatedItem struct {
 	Id       string `json:"id"`
-	Rank		 int	  `json:"rank"`  // json fork
+	Rank		 int	  `json:"rank"`  // tgn fork
 	Distance string `json:"distance"`
-	Text		 string `json:"text"`  // json fork
+	Text		 string `json:"text"`  // tgn fork
 }
